@@ -3,7 +3,7 @@ package forplay.sample.tictacktoe.java;
 import forplay.core.ForPlay;
 import forplay.java.JavaAssetManager;
 import forplay.java.JavaPlatform;
-import forplay.sample.tictacktoe.TicTackToeGame;
+import forplay.sample.tictacktoe.core.TicTackToeGame;
 
 public class TicTackToeJava {
   public static void main(String[] args) {

@@ -4,6 +4,10 @@
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/forplay.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hukun/Desktop/forplay-samples3/tictacktoe/lib/gwt-voices-r421.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-log-r613.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-voices-r421.jar"/>
+	<classpathentry kind="lib" path="lib/gwtflash.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/forplay"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

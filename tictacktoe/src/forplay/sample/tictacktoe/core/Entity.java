@@ -1,4 +1,4 @@
-package forplay.sample.tictacktoe;
+package forplay.sample.tictacktoe.core;
 
 import forplay.core.Surface;
 
