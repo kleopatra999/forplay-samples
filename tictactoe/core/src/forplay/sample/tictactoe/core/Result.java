@@ -1,57 +1,52 @@
 package forplay.sample.tictactoe.core;
 
 import static forplay.core.ForPlay.assetManager;
-import forplay.core.Color;
 import forplay.core.Image;
 import forplay.core.Surface;
 
 public class Result extends Entity {
 
+  public enum State {
+    NA(0), XWIN(1), OWIN(2);
+    private int val;
+
+    int value() {
+      return val;
+    }
+
+    State(int value) {
+      this.val = value;
+    }
+  }
+
+  public static int WIDTH = 200;
+  public static int HEIGHT = 50;
+
   Image xWin;
   Image oWin;
-  Player player;
-  
-  private static int NA = 0;
-  private static int XWIN = 1;
-  private static int OWIN = 2;
-  
-  public Result(Surface surface, float px, float py, float width, float height) {
-    super(surface, px, py, width, height);
-    this.xWin = assetManager().getImage("images/xwin.png"); 
+
+  public Result(Surface surface, float px, float py) {
+    super(surface, px, py, WIDTH, HEIGHT);
+    this.xWin = assetManager().getImage("images/xwin.png");
     this.oWin = assetManager().getImage("images/owin.png");
     this.reset();
   }
 
-  @Override
   public void update(float delta) {
     // TODO Auto-generated method stub
-    if (this.cur_status == Result.XWIN) {
-      this.surface.drawImage(this.xWin, this.px, this.py);
-    } else if (this.cur_status == Result.OWIN) {
-      this.surface.drawImage(this.oWin, this.px, this.py);
-    }
   }
 
-  @Override
-  public boolean changeStatus() {
-    // TODO Auto-generated method stub
-    if (this.player.cur_status == Player.PLAYX) {
-      this.cur_status = Result.XWIN;
-    } else if (this.player.cur_status == Player.PLAYO) {
-      this.cur_status = Result.OWIN;
+  public void changeState(State newState) {
+    if (newState == State.XWIN) {
+      this.surface.drawImage(this.xWin, px, py);
+    } else {
+      this.surface.drawImage(this.oWin, px, py);
     }
-    return true;
   }
 
   @Override
   public void reset() {
-    this.cur_status = Result.NA;
-    this.pre_status = Result.NA;
-    this.surface.setFillColor(Color.rgb(255, 255, 255));
-    this.surface.fillRect(this.px, this.py, this.width, this.height);
-  }
-  
-  public void attachPlayer(Player player) {
-    this.player = player;
+    // TODO Auto-generated method stub
+
   }
 }
