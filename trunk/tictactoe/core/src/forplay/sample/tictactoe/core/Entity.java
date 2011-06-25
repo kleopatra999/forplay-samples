@@ -28,6 +28,5 @@ public abstract class Entity {
     }
     return this.isHit;
   }
-  
-  public abstract void reset();
+
 }

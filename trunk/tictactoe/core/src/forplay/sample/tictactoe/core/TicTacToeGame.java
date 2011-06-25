@@ -5,7 +5,6 @@ import static forplay.core.ForPlay.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
 import forplay.core.Game;
 import forplay.core.Image;
 import forplay.core.SurfaceLayer;
@@ -20,18 +19,17 @@ public class TicTacToeGame implements Game, Pointer.Listener {
   final static int MARGIN_TOP = 55;
   static int MARGIN_LEFT;
   final static int SPAN = 5;
-  
+
   private SurfaceLayer surfaceLayer;
   private Button button;
   private Result result;
   private ArrayList<Block> block_list;
   private int steps;
-  
+
   @Override
   public void init() {
-    // TODO Auto-generated method stub
     this.steps = 1;
-    MARGIN_LEFT =  (GAME_WIDTH - Block.WIDTH * 3) / 2;
+    MARGIN_LEFT = (GAME_WIDTH - Block.WIDTH * 3) / 2;
     graphics().setSize(GAME_WIDTH, GAME_HEIGHT);
     surfaceLayer = graphics().createSurfaceLayer(GAME_WIDTH, GAME_HEIGHT);
     Surface surface = surfaceLayer.surface();
@@ -39,10 +37,10 @@ public class TicTacToeGame implements Game, Pointer.Listener {
 
     surface.setFillColor(Color.rgb(255, 255, 255));
     surface.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    
+
     this.block_list = new ArrayList<Block>();
     this.button = new Button(surface, MARGIN_LEFT + SPAN, MARGIN_TOP - 50);
-    
+
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
         int block_px = MARGIN_LEFT + Block.WIDTH * j;
@@ -50,10 +48,10 @@ public class TicTacToeGame implements Game, Pointer.Listener {
         Block block_entity = new Block(surface, block_px, block_py);
         this.block_list.add(block_entity);
       }
-    }    
+    }
     this.result = new Result(surface, MARGIN_LEFT + 20, MARGIN_TOP + Block.HEIGHT * 3);
     TicTacToeGame.drawPlayer(surface, Block.Player.X);
-    
+
     pointer().setListener(this);
   }
 
@@ -64,17 +62,17 @@ public class TicTacToeGame implements Game, Pointer.Listener {
     } else {
       image = assetManager().getImage("images/playo.png");
     }
-    int player_px = TicTacToeGame.MARGIN_LEFT + TicTacToeGame.SPAN*2 + Button.WIDTH;
+    int player_px = TicTacToeGame.MARGIN_LEFT + TicTacToeGame.SPAN * 2 + Button.WIDTH;
     int player_py = TicTacToeGame.MARGIN_TOP - 50;
     surface.drawImage(image, player_px, player_py);
   }
-  
+
   private boolean compareStatus(Block first, Block second, Block third, boolean isXPlayer) {
     if ((first.currentState != Block.State.BLANK) && (first.currentState == second.currentState)
         && (first.currentState == third.currentState)) {
       if (isXPlayer & first.currentState == Block.State.X) {
         return true;
-      } else if (first.currentState == Block.State.O){
+      } else if (first.currentState == Block.State.O) {
         return true;
       }
     }
@@ -106,16 +104,16 @@ public class TicTacToeGame implements Game, Pointer.Listener {
     return false;
   }
 
-  private void reset(){
+  private void reset() {
     Iterator<Block> it = this.block_list.iterator();
     while (it.hasNext()) {
       Block block = it.next();
       block.reset();
     }
-   TicTacToeGame.drawPlayer(this.surfaceLayer.surface(), Block.Player.X);
-   this.steps = 1; 
+    TicTacToeGame.drawPlayer(this.surfaceLayer.surface(), Block.Player.X);
+    this.steps = 1;
   }
-  
+
   private void changeBlockState(Block block, int steps) {
     Block.Player player;
     if (steps % 2 == 0) {
@@ -128,7 +126,7 @@ public class TicTacToeGame implements Game, Pointer.Listener {
     block.setPlayer(player);
 
   }
-  
+
   @Override
   public void onPointerStart(float x, float y) {
     if (!this.button.hitTest(x, y)) {
@@ -137,16 +135,16 @@ public class TicTacToeGame implements Game, Pointer.Listener {
         Block block = it.next();
         if (block.hitTest(x, y) && block.currentState == Block.State.BLANK) {
           changeBlockState(block, steps);
-          
-          boolean isXPlayer = (this.steps % 2 == 1)? true : false;
+
+          boolean isXPlayer = (this.steps % 2 == 1) ? true : false;
           if (this.checkWin(isXPlayer)) {
-            Result.State resultState = isXPlayer? Result.State.XWIN: Result.State.OWIN;
+            Result.State resultState = isXPlayer ? Result.State.XWIN : Result.State.OWIN;
             this.result.changeState(resultState);
             reset();
           } else if (this.steps == 9) {
             reset();
           } else {
-            this.steps ++;  
+            this.steps++;
           }
         }
       }
