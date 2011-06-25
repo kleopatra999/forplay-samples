@@ -6,20 +6,18 @@ public abstract class Entity {
 
   float px;
   float py;
-  float width;
-  float height;
   boolean isHit;
   Surface surface;
-  int pre_status;
-  int cur_status;
+  int width;
+  int height;
 
-  public Entity(Surface surface, float px, float py, float width, float height) {
+  public Entity(Surface surface, float px, float py, int width, int height) {
     this.surface = surface;
     this.px = px;
     this.py = py;
+    this.isHit = false;
     this.width = width;
     this.height = height;
-    this.isHit = false;
   }
 
   public boolean hitTest(float x, float y) {
@@ -31,12 +29,5 @@ public abstract class Entity {
     return this.isHit;
   }
   
-  public abstract void update(float delta); 
-  public abstract boolean changeStatus();
   public abstract void reset();
-  
-  public int getStatus() {
-    return this.cur_status;
-  }
-
 }

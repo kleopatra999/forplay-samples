@@ -6,20 +6,18 @@ import forplay.core.Surface;
 
 public class Button extends Entity {
 
-  private Image image;
-  public Button(Surface surface, float px, float py, float width, float height) {
-    super(surface, px, py, width, height);
+
+  public static int  WIDTH = 100;
+  public static int  HEIGHT = 40;
+  
+  public Button(Surface surface, float px, float py) {
+    super(surface, px, py, WIDTH, HEIGHT);
     Image button = assetManager().getImage("images/button.png");
     this.surface.drawImage(button, px, py);
   }
-  @Override
-  public void update(float delta) {
-    // TODO Auto-generated method stub
+
+  public void changeState(int newState) {
     
-  }
-  @Override
-  public boolean changeStatus() {
-    return false;
   }
   @Override
   public void reset() {
