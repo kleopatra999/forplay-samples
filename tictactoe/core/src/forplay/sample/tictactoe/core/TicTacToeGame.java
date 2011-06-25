@@ -17,7 +17,7 @@ public class TicTacToeGame implements Game, Pointer.Listener {
   final static int GAME_WIDTH = 800;
   final static int GAME_HEIGHT = 700;
   final static int MARGIN_TOP = 55;
-  static int MARGIN_LEFT;
+  final static int MARGIN_LEFT = (GAME_WIDTH - Block.WIDTH * 3) / 2;;
   final static int SPAN = 5;
 
   private SurfaceLayer surfaceLayer;
@@ -28,8 +28,7 @@ public class TicTacToeGame implements Game, Pointer.Listener {
 
   @Override
   public void init() {
-    this.steps = 1;
-    MARGIN_LEFT = (GAME_WIDTH - Block.WIDTH * 3) / 2;
+    this.steps = 1; 
     graphics().setSize(GAME_WIDTH, GAME_HEIGHT);
     surfaceLayer = graphics().createSurfaceLayer(GAME_WIDTH, GAME_HEIGHT);
     Surface surface = surfaceLayer.surface();
