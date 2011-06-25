@@ -29,11 +29,6 @@ public class Result extends Entity {
     super(surface, px, py, WIDTH, HEIGHT);
     this.xWin = assetManager().getImage("images/xwin.png");
     this.oWin = assetManager().getImage("images/owin.png");
-    this.reset();
-  }
-
-  public void update(float delta) {
-    // TODO Auto-generated method stub
   }
 
   public void changeState(State newState) {
@@ -42,11 +37,5 @@ public class Result extends Entity {
     } else {
       this.surface.drawImage(this.oWin, px, py);
     }
-  }
-
-  @Override
-  public void reset() {
-    // TODO Auto-generated method stub
-
   }
 }
