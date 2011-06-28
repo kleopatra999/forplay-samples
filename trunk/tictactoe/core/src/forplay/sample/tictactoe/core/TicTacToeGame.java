@@ -7,7 +7,9 @@ import java.util.Iterator;
 
 import forplay.core.Game;
 import forplay.core.Image;
+import forplay.core.ImageLayer;
 import forplay.core.SurfaceLayer;
+import forplay.core.GroupLayer;
 import forplay.core.Surface;
 import forplay.core.Pointer;
 import forplay.core.Color;
@@ -21,6 +23,7 @@ public class TicTacToeGame implements Game, Pointer.Listener {
   final static int SPAN = 5;
 
   private SurfaceLayer surfaceLayer;
+  private GroupLayer groupLayer;
   private Button button;
   private Result result;
   private ArrayList<Block> block_list;
@@ -33,28 +36,30 @@ public class TicTacToeGame implements Game, Pointer.Listener {
     surfaceLayer = graphics().createSurfaceLayer(GAME_WIDTH, GAME_HEIGHT);
     Surface surface = surfaceLayer.surface();
     graphics().rootLayer().add(surfaceLayer);
-
     surface.setFillColor(Color.rgb(255, 255, 255));
     surface.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
+    groupLayer = graphics().createGroupLayer();
+    graphics().rootLayer().add(groupLayer);
+    
     this.block_list = new ArrayList<Block>();
-    this.button = new Button(surface, MARGIN_LEFT + SPAN, MARGIN_TOP - 50);
-
+    this.button = new Button(groupLayer, MARGIN_LEFT + SPAN, MARGIN_TOP - 50);
+    this.result = new Result(groupLayer, MARGIN_LEFT + 20, MARGIN_TOP + Block.HEIGHT * 3);
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
         int block_px = MARGIN_LEFT + Block.WIDTH * j;
         int block_py = MARGIN_TOP + Block.HEIGHT * i;
-        Block block_entity = new Block(surface, block_px, block_py);
+        Block block_entity = new Block(groupLayer, block_px, block_py);
         this.block_list.add(block_entity);
       }
     }
-    this.result = new Result(surface, MARGIN_LEFT + 20, MARGIN_TOP + Block.HEIGHT * 3);
-    TicTacToeGame.drawPlayer(surface, Block.Player.X);
+    
+    TicTacToeGame.drawPlayer(groupLayer, Block.Player.X);
 
     pointer().setListener(this);
   }
 
-  static void drawPlayer(Surface surface, Block.Player player) {
+  static void drawPlayer(GroupLayer groupLayer, Block.Player player) {
     Image image = null;
     if (player == Player.X) {
       image = assetManager().getImage("images/playx.png");
@@ -63,7 +68,10 @@ public class TicTacToeGame implements Game, Pointer.Listener {
     }
     int player_px = TicTacToeGame.MARGIN_LEFT + TicTacToeGame.SPAN * 2 + Button.WIDTH;
     int player_py = TicTacToeGame.MARGIN_TOP - 50;
-    surface.drawImage(image, player_px, player_py);
+    ImageLayer imageLayer = graphics().createImageLayer();
+    imageLayer.setImage(image);
+    imageLayer.setTranslation(player_px, player_py);
+    groupLayer.add(imageLayer);
   }
 
   private boolean compareStatus(Block first, Block second, Block third, boolean isXPlayer) {
@@ -109,7 +117,7 @@ public class TicTacToeGame implements Game, Pointer.Listener {
       Block block = it.next();
       block.reset();
     }
-    TicTacToeGame.drawPlayer(this.surfaceLayer.surface(), Block.Player.X);
+    TicTacToeGame.drawPlayer(this.groupLayer, Block.Player.X);
     this.steps = 1;
   }
 
@@ -141,6 +149,7 @@ public class TicTacToeGame implements Game, Pointer.Listener {
             this.result.changeState(resultState);
             reset();
           } else if (this.steps == 9) {
+            this.result.changeState(Result.State.NA);
             reset();
           } else {
             this.steps++;
