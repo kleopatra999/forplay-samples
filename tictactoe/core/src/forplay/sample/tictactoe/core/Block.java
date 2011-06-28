@@ -1,10 +1,14 @@
 package forplay.sample.tictactoe.core;
 
 import static forplay.core.ForPlay.assetManager;
+import static forplay.core.ForPlay.log;
 
 import java.util.ArrayList;
 
+import forplay.core.GroupLayer;
 import forplay.core.Image;
+import forplay.core.ImageLayer;
+import forplay.core.ResourceCallback;
 import forplay.core.Surface;
 
 public class Block extends Entity {
@@ -38,16 +42,16 @@ public class Block extends Entity {
   public static int WIDTH = 185;
   public static int HEIGHT = 185;
 
-  protected ArrayList<Image> img_list;
   public State currentState;
   public Player player;
 
-  public Block(Surface surface, float px, float py) {
-    super(surface, px, py, WIDTH, HEIGHT);
-    this.img_list = new ArrayList<Image>();
-    this.img_list.add(assetManager().getImage("images/block.png"));
-    this.img_list.add(assetManager().getImage("images/x.png"));
-    this.img_list.add(assetManager().getImage("images/o.png"));
+  public Block(GroupLayer groupLayer, float px, float py) {
+    super(groupLayer, px, py, WIDTH, HEIGHT);
+    this.img_list = new Image[3];
+    this.img_list[0] = assetManager().getImage("images/block.png");
+    this.img_list[1] = assetManager().getImage("images/x.png");
+    this.img_list[2] = assetManager().getImage("images/o.png");
+    this.loadImage(img_list[0]);
     this.reset();
   }
 
@@ -58,24 +62,22 @@ public class Block extends Entity {
   public void setPlayer(Player player) {
     this.player = player;
     if (player == Block.Player.X) {
-      TicTacToeGame.drawPlayer(surface, Block.Player.O);
+      TicTacToeGame.drawPlayer(this.groupLayer, Block.Player.O);
     } else if (player == Block.Player.O) {
-      TicTacToeGame.drawPlayer(surface, Block.Player.X);
+      TicTacToeGame.drawPlayer(this.groupLayer, Block.Player.X);
     }
-
   }
 
   public void changeState(State newState) {
     if (newState != this.currentState) {
       this.currentState = newState;
-      Image image = this.img_list.get(this.currentState.value());
-      this.surface.drawImage(image, px, py);
+      this.loadImage(this.img_list[this.currentState.value()]);
     }
   }
 
   public void reset() {
-    this.surface.drawImage(this.img_list.get(0), px, py);
     this.currentState = State.BLANK;
+    this.loadImage(img_list[0]);
   }
 
 }
