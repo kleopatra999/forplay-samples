@@ -25,8 +25,11 @@ import forplay.core.ImageLayer;
 import forplay.core.ResourceCallback;
 
 import forplay.core.Mouse;
+import forplay.core.Mouse.ButtonEvent;
+import forplay.core.Mouse.MotionEvent;
+import forplay.core.Mouse.WheelEvent;
 
-public class scrolltestGame implements Game, Mouse.Listener {
+public class scrolltestGame implements Game {
   GroupLayer peaLayer;
 
   ImageLayer imgLayer;
@@ -38,7 +41,38 @@ public class scrolltestGame implements Game, Mouse.Listener {
     graphics().rootLayer().add(bgLayer);  
     
 
-    mouse().setListener(this);
+    mouse().setListener(new Mouse.Listener() {
+      @Override
+      public void onMouseWheelScroll(WheelEvent event) {
+        float velocity = event.velocity();
+        if (Math.abs(velocity) == 1.0) {
+          ForPlay.log().info(String.valueOf(velocity));  
+        } else if (Math.floor(velocity) == velocity) {
+          ForPlay.log().warn(String.valueOf(velocity));
+        } else {
+          ForPlay.log().error(String.valueOf(velocity));
+        }
+        
+      }
+      
+      @Override
+      public void onMouseUp(ButtonEvent event) {
+        // TODO Auto-generated method stub
+        
+      }
+      
+      @Override
+      public void onMouseMove(MotionEvent event) {
+        // TODO Auto-generated method stub
+        
+      }
+      
+      @Override
+      public void onMouseDown(ButtonEvent event) {
+        // TODO Auto-generated method stub
+        
+      }
+    });
   }
 
   @Override
@@ -57,57 +91,5 @@ public class scrolltestGame implements Game, Mouse.Listener {
   public int updateRate() {
     return 25;
   }
-
-  @Override
-  public void onMouseDown(float x, float y, int button) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void onMouseUp(float x, float y, int button) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void onMouseMove(float x, float y) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void onMouseWheelScroll(float velocity) {
-    if (Math.abs(velocity) == 1.0) {
-      ForPlay.log().info(String.valueOf(velocity));  
-    } else if (Math.floor(velocity) == velocity) {
-      ForPlay.log().warn(String.valueOf(velocity));
-    } else {
-      ForPlay.log().error(String.valueOf(velocity));
-    }
-    
-//    String imageName = "";
-//    if (velocity < 0) {
-//      imageName = "scrollup.png";
-//    } else if (velocity > 0) {
-//      imageName = "scrolldown.png";
-//    } 
-//    
-//    
-//    
-//    Image img = assetManager().getImage("images/" + imageName);
-//    imgLayer = graphics().createImageLayer(img);
-//    
-//    img.addCallback(new ResourceCallback<Image>() {
-//      @Override
-//      public void done(Image image) {
-//        imgLayer.setOrigin(0, 0);
-//        graphics().rootLayer().add(imgLayer);
-//      }
-//
-//      @Override
-//      public void error(Throwable err) {
-//      }
-//    });
-  }
+  
 }
