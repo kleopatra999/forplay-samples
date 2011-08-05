@@ -13,9 +13,10 @@ import forplay.core.GroupLayer;
 import forplay.core.Surface;
 import forplay.core.Pointer;
 import forplay.core.Color;
+import forplay.core.Pointer.Event;
 import forplay.sample.tictactoe.core.Block.Player;
 
-public class TicTacToeGame implements Game, Pointer.Listener {
+public class TicTacToeGame implements Game {
   final static int GAME_WIDTH = 800;
   final static int GAME_HEIGHT = 700;
   final static int MARGIN_TOP = 55;
@@ -56,7 +57,48 @@ public class TicTacToeGame implements Game, Pointer.Listener {
     
     TicTacToeGame.drawPlayer(groupLayer, Block.Player.X);
 
-    pointer().setListener(this);
+    pointer().setListener(new Pointer.Listener() {
+      
+      @Override
+      public void onPointerStart(Event event) {
+        if (!button.hitTest(event.x(), event.y())) {
+          Iterator<Block> it = block_list.iterator();
+          while (it.hasNext()) {
+            Block block = it.next();
+            if (block.hitTest(event.x(), event.y()) && block.currentState == Block.State.BLANK) {
+              changeBlockState(block, steps);
+
+              boolean isXPlayer = (steps % 2 == 1) ? true : false;
+              if (checkWin(isXPlayer)) {
+                Result.State resultState = isXPlayer ? Result.State.XWIN : Result.State.OWIN;
+                result.changeState(resultState);
+                reset();
+              } else if (steps == 9) {
+                result.changeState(Result.State.NA);
+                reset();
+              } else {
+                steps++;
+              }
+            }
+          }
+        } else {
+          reset();
+        }
+        
+      }
+      
+      @Override
+      public void onPointerEnd(Event event) {
+        // TODO Auto-generated method stub
+        
+      }
+      
+      @Override
+      public void onPointerDrag(Event event) {
+        // TODO Auto-generated method stub
+        
+      }
+    });
   }
 
   static void drawPlayer(GroupLayer groupLayer, Block.Player player) {
@@ -131,45 +173,6 @@ public class TicTacToeGame implements Game, Pointer.Listener {
       block.changeState(Block.State.X);
     }
     block.setPlayer(player);
-
-  }
-
-  @Override
-  public void onPointerStart(float x, float y) {
-    if (!this.button.hitTest(x, y)) {
-      Iterator<Block> it = this.block_list.iterator();
-      while (it.hasNext()) {
-        Block block = it.next();
-        if (block.hitTest(x, y) && block.currentState == Block.State.BLANK) {
-          changeBlockState(block, steps);
-
-          boolean isXPlayer = (this.steps % 2 == 1) ? true : false;
-          if (this.checkWin(isXPlayer)) {
-            Result.State resultState = isXPlayer ? Result.State.XWIN : Result.State.OWIN;
-            this.result.changeState(resultState);
-            reset();
-          } else if (this.steps == 9) {
-            this.result.changeState(Result.State.NA);
-            reset();
-          } else {
-            this.steps++;
-          }
-        }
-      }
-    } else {
-      reset();
-    }
-  }
-
-  @Override
-  public void onPointerEnd(float x, float y) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void onPointerDrag(float x, float y) {
-    // TODO Auto-generated method stub
 
   }
 
