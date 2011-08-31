@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<project name="testiap" default="compile">
+  <property name="java.classname" value="com.test.java.TestIAPGameJava"/>
+  <property name="html.classname" value="com.test.TestIAPGame"/>
+  <property name="html.index" value="testiapGame.html"/>
+  <import file="../build-common.xml"/>
+</project>
